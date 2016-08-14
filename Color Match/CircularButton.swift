@@ -34,13 +34,41 @@ class CircularButton: UIButton {
     override func draw(_ rect: CGRect) {
         let minimumLength = min(bounds.width, bounds.height)
         let borderWidth: CGFloat = minimumLength * 0.1
+        
+        let radius = (minimumLength - borderWidth)/2
         let path = UIBezierPath(arcCenter: CGPoint(x:bounds.width/2, y:bounds.height/2), radius: (minimumLength - borderWidth)/2, startAngle: 0, endAngle: 360, clockwise: true)
         
         path.lineWidth = borderWidth
         borderColor.setStroke()
-        fillColor.setFill()
+        //fillColor.setFill()
         path.stroke()
-        path.fill()
+        //path.fill()
+        
+        let context = UIGraphicsGetCurrentContext()
+        let locations: [CGFloat] = [0.0, 1.0]
+        
+        let colors = [UIColor.white.cgColor,
+                      fillColor.cgColor]
+        
+        let colorspace = CGColorSpaceCreateDeviceRGB()
+        
+        let gradient = CGGradient(colorsSpace: colorspace,
+                                  colors: colors, locations: locations)
+        
+        var startPoint = CGPoint()
+        var endPoint = CGPoint()
+        startPoint.x = radius/1.2
+        startPoint.y = radius/1.2
+        endPoint.x = minimumLength/2
+        endPoint.y = minimumLength/2
+        let startRadius: CGFloat = 0
+        let endRadius: CGFloat = radius
+        
+        context!.drawRadialGradient (gradient!, startCenter: startPoint,
+                                     startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
+                                     options: CGGradientDrawingOptions(rawValue: UInt32(0)))
+        
+        
         
     }
 }

@@ -19,16 +19,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Gh-Jf-cxg" customClass="CircularButton" customModule="Color_Match" customModuleProvider="target">
+                                <color key="backgroundColor" red="0.49987230490000001" green="0.91901187959999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Fdn-1s-mzX"/>
                                     <constraint firstAttribute="width" constant="100" id="hsa-Kk-7Fk"/>
                                 </constraints>
-                                <connections>
-                                    <action selector="circularButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Fcu-lv-Kpq"/>
-                                </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vfs-gb-TDs">
+                                <frame key="frameInset" minY="607" width="375" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.87460916841374492" green="1" blue="0.9141098263268419" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.49987230493583601" green="0.91901187955805874" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="3Gh-Jf-cxg" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PvW-jh-6dC"/>
                             <constraint firstItem="3Gh-Jf-cxg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WET-yQ-ota"/>
@@ -36,10 +39,12 @@
                     </view>
                     <connections>
                         <outlet property="circularButton" destination="3Gh-Jf-cxg" id="ZFG-BB-zD1"/>
+                        <outlet property="colorCodeView" destination="Vfs-gb-TDs" id="qec-vu-qGr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
         </scene>
     </scenes>
 </document>

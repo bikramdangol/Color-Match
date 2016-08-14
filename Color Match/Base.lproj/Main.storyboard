@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11156"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,26 +19,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wood_texture.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="OuI-O2-71c"/>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Gh-Jf-cxg" customClass="CircularButton" customModule="Color_Match" customModuleProvider="target">
-                                <color key="backgroundColor" red="0.49987230490000001" green="0.91901187959999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Fdn-1s-mzX"/>
                                     <constraint firstAttribute="width" constant="100" id="hsa-Kk-7Fk"/>
                                 </constraints>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vfs-gb-TDs">
+                            <view alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vfs-gb-TDs">
                                 <frame key="frameInset" minY="607" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.87460916841374492" green="1" blue="0.9141098263268419" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.49987230493583601" green="0.91901187955805874" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="OuI-O2-71c" secondAttribute="trailing" constant="-20" id="9CK-Pn-eFu"/>
+                            <constraint firstItem="OuI-O2-71c" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="JK5-nI-Gcz"/>
+                            <constraint firstItem="OuI-O2-71c" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="OnJ-uw-iQU"/>
                             <constraint firstItem="3Gh-Jf-cxg" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PvW-jh-6dC"/>
                             <constraint firstItem="3Gh-Jf-cxg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WET-yQ-ota"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OuI-O2-71c" secondAttribute="bottom" id="kyB-Gr-anZ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backgroundImage" destination="OuI-O2-71c" id="D1D-78-7eo"/>
                         <outlet property="circularButton" destination="3Gh-Jf-cxg" id="ZFG-BB-zD1"/>
                         <outlet property="colorCodeView" destination="Vfs-gb-TDs" id="qec-vu-qGr"/>
                     </connections>
@@ -47,4 +52,7 @@
             <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="wood_texture.jpg" width="1024" height="768"/>
+    </resources>
 </document>

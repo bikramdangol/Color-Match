@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet var circularButton: CircularButton!
     @IBOutlet var colorCodeView: UIView!
+    @IBOutlet var backgroundImage: UIImageView!
     var selectedButton: CircularButton = CircularButton()
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -12,8 +12,8 @@ class CircularButton: UIButton {
     //0.559005 0.932134 1.00065 1
     
     //let defaultFillColor = UIColor(colorLiteralRed: 0.559005, green: 0.932134, blue: 1.00065, alpha: 1)
-
-    @IBInspectable var fillColor: UIColor = UIColor(colorLiteralRed: 127/255, green: 234/255, blue: 255/255, alpha: 1) {
+    //  = UIColor(colorLiteralRed: 127/255, green: 234/255, blue: 255/255, alpha: 1)
+    @IBInspectable var fillColor: UIColor = UIColor.clear {
         didSet(oldColor) {
             if fillColor != oldColor {
                 self.setNeedsDisplay()
@@ -28,6 +28,8 @@ class CircularButton: UIButton {
             }
         }
     }
+    
+    @IBInspectable var endColor: UIColor = UIColor.white
     
     override func draw(_ rect: CGRect) {
         let minimumLength = min(bounds.width, bounds.height)

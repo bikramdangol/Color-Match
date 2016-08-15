@@ -20,12 +20,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wood_texture.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="OuI-O2-71c"/>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Gh-Jf-cxg" customClass="CircularButton" customModule="Color_Match" customModuleProvider="target">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="Fdn-1s-mzX"/>
-                                    <constraint firstAttribute="width" constant="100" id="hsa-Kk-7Fk"/>
-                                </constraints>
-                            </button>
                             <view alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vfs-gb-TDs">
                                 <frame key="frameInset" minY="607" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -36,14 +30,11 @@
                             <constraint firstAttribute="trailingMargin" secondItem="OuI-O2-71c" secondAttribute="trailing" constant="-20" id="9CK-Pn-eFu"/>
                             <constraint firstItem="OuI-O2-71c" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="JK5-nI-Gcz"/>
                             <constraint firstItem="OuI-O2-71c" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="OnJ-uw-iQU"/>
-                            <constraint firstItem="3Gh-Jf-cxg" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PvW-jh-6dC"/>
-                            <constraint firstItem="3Gh-Jf-cxg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WET-yQ-ota"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OuI-O2-71c" secondAttribute="bottom" id="kyB-Gr-anZ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backgroundImage" destination="OuI-O2-71c" id="D1D-78-7eo"/>
-                        <outlet property="circularButton" destination="3Gh-Jf-cxg" id="ZFG-BB-zD1"/>
                         <outlet property="colorCodeView" destination="Vfs-gb-TDs" id="qec-vu-qGr"/>
                     </connections>
                 </viewController>

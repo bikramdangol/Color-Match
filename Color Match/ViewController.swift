@@ -10,10 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet var circularButton: CircularButton!
     @IBOutlet var colorCodeView: UIView!
     @IBOutlet var backgroundImage: UIImageView!
     var selectedButton: CircularButton = CircularButton()
+    let maxTry = 8
+    var selectedColor = UIColor.clear
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -26,6 +27,7 @@ class ViewController: UIViewController {
         
         print("Color view height is : \(colorCodeView.frame.height)")
         
+        // Build color selection row
         for i in 0..<6
         {
             let circularButton = CircularButton()
@@ -36,6 +38,22 @@ class ViewController: UIViewController {
             self.colorCodeView.addSubview(circularButton)
         }
         
+        // Fill board
+        for i in 1...8
+        {
+            let tryRow = UIView(frame: CGRect(x: 0, y: self.view.frame.height - CGFloat(i + 1) * circleDiameter, width: self.view.frame.width - 2 * circleDiameter, height: circleDiameter))
+            self.view.addSubview(tryRow)
+            for j in 0..<4
+            {
+                let circularButton = CircularButton()
+                circularButton.borderColor = UIColor.white
+                circularButton.fillColor = UIColor.clear
+                circularButton.frame = CGRect(x: CGFloat(j) * circleDiameter, y: 0, width: circleDiameter, height: circleDiameter)
+                circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
+                tryRow.addSubview(circularButton)
+            }
+        }
+        
     }
     
     func selectColor(_ sender:CircularButton)
@@ -43,8 +61,13 @@ class ViewController: UIViewController {
         selectedButton.borderColor = UIColor.white
         sender.borderColor = UIColor.black
         selectedButton = sender
-        self.circularButton.fillColor = sender.fillColor
+        selectedColor = sender.fillColor
         print(sender.fillColor)
+    }
+    
+    func dropColor(_ sender:CircularButton)
+    {
+        sender.fillColor = selectedColor
     }
 
     override func didReceiveMemoryWarning() {

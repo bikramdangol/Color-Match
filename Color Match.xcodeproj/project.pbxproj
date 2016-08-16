@@ -17,6 +17,7 @@
 		5948D2651D60022100436853 /* Color_MatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5948D2641D60022100436853 /* Color_MatchUITests.swift */; };
 		5948D2731D60026100436853 /* CircularButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5948D2721D60026100436853 /* CircularButton.swift */; };
 		5948D2751D60DF5500436853 /* wood_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5948D2741D60DF5500436853 /* wood_texture.jpg */; };
+		59875E381D6295F900575730 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59875E371D6295F900575730 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		5948D2661D60022100436853 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5948D2721D60026100436853 /* CircularButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularButton.swift; sourceTree = "<group>"; };
 		5948D2741D60DF5500436853 /* wood_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wood_texture.jpg; sourceTree = "<group>"; };
+		59875E371D6295F900575730 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				5948D2411D60022100436853 /* AppDelegate.swift */,
 				5948D2431D60022100436853 /* ViewController.swift */,
 				5948D2451D60022100436853 /* Main.storyboard */,
+				59875E371D6295F900575730 /* HomeViewController.swift */,
 				5948D2721D60026100436853 /* CircularButton.swift */,
 				5948D24B1D60022100436853 /* Assets.xcassets */,
 				5948D2741D60DF5500436853 /* wood_texture.jpg */,
@@ -272,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59875E381D6295F900575730 /* HomeViewController.swift in Sources */,
 				5948D2731D60026100436853 /* CircularButton.swift in Sources */,
 				5948D2441D60022100436853 /* ViewController.swift in Sources */,
 				5948D24A1D60022100436853 /* Color_Match.xcdatamodeld in Sources */,
@@ -524,6 +528,7 @@
 				5948D26B1D60022100436853 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5948D26C1D60022100436853 /* Build configuration list for PBXNativeTarget "Color MatchTests" */ = {
 			isa = XCConfigurationList;
@@ -532,6 +537,7 @@
 				5948D26E1D60022100436853 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5948D26F1D60022100436853 /* Build configuration list for PBXNativeTarget "Color MatchUITests" */ = {
 			isa = XCConfigurationList;
@@ -540,6 +546,7 @@
 				5948D2711D60022100436853 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

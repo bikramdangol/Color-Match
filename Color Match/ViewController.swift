@@ -15,6 +15,11 @@ class ViewController: UIViewController {
     var selectedButton: CircularButton = CircularButton()
     let maxTry = 8
     var selectedColor = UIColor.clear
+    
+    @IBAction func backButtonPressed(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

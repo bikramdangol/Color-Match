@@ -44,14 +44,21 @@ class CircularButton: UIButton {
         path.lineWidth = borderWidth
         borderColor.setStroke()
         //fillColor.setFill()
-        path.stroke()
+        //path.stroke()
         //path.fill()
         
         let context = UIGraphicsGetCurrentContext()
         let locations: [CGFloat] = [0.0, 1.0]
         
-        let colors = [UIColor.white.cgColor,
-                      fillColor.cgColor]
+        var colors = [CGColor]()
+        if fillColor == UIColor.clear{
+            colors = [UIColor.white.cgColor, UIColor.brown.cgColor]
+        } else {
+            colors = [UIColor.white.cgColor, fillColor.cgColor]
+            if borderColor == UIColor.black {
+                path.stroke()
+            }
+        }
         
         let colorspace = CGColorSpaceCreateDeviceRGB()
         
@@ -60,16 +67,30 @@ class CircularButton: UIButton {
         
         var startPoint = CGPoint()
         var endPoint = CGPoint()
-        startPoint.x = radius/1.2
-        startPoint.y = radius/1.2
-        endPoint.x = centerX
-        endPoint.y = centerY
-        let startRadius: CGFloat = 0
-        let endRadius: CGFloat = radius - borderWidth/2
         
-        context!.drawRadialGradient (gradient!, startCenter: startPoint,
+        if fillColor == UIColor.clear{
+            startPoint.x = centerX * 0.9
+            startPoint.y = centerY * 1.3
+            endPoint.x = centerX
+            endPoint.y = centerY
+            let startRadius: CGFloat = 0
+            let endRadius: CGFloat = radius/2
+
+            context!.drawRadialGradient (gradient!, startCenter: startPoint,
+                                         startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
+                                         options: CGGradientDrawingOptions(rawValue: UInt32(0)))
+        }else {
+            startPoint.x = centerX/1.2
+            startPoint.y = centerY/1.2
+            endPoint.x = centerX
+            endPoint.y = centerY
+            let startRadius: CGFloat = 0
+            let endRadius: CGFloat = radius * 0.75 //- borderWidth/2
+        
+            context!.drawRadialGradient (gradient!, startCenter: startPoint,
                                      startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                      options: CGGradientDrawingOptions(rawValue: UInt32(0)))
+        }
         
     }
 }

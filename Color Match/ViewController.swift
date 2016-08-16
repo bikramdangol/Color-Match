@@ -43,6 +43,25 @@ class ViewController: UIViewController {
             self.colorCodeView.addSubview(circularButton)
         }
         
+        // Put divider
+        let transparentRow = UIView(frame: CGRect(x: 0, y: self.view.frame.height - circleDiameter, width: self.view.frame.width , height: circleDiameter * 0.1))
+        let darkLine = UIView(frame: CGRect(x: 0, y: self.view.frame.height - circleDiameter, width: self.view.frame.width , height: 2))
+        let lightLine = UIView(frame: CGRect(x: 0, y: self.view.frame.height - 2 - circleDiameter, width: self.view.frame.width , height: 2))
+        let darkBrownLine = UIView(frame: CGRect(x: 0, y: self.view.frame.height - 2 - circleDiameter - (circleDiameter * 0.1), width: self.view.frame.width , height: circleDiameter * 0.1))
+        transparentRow.alpha = 0.5
+        transparentRow.backgroundColor = UIColor.white
+        self.view.addSubview(transparentRow)
+        darkLine.backgroundColor = UIColor.brown
+        self.view.addSubview(darkLine)
+        
+        lightLine.backgroundColor = UIColor.white
+        lightLine.alpha = 0.3
+        self.view.addSubview(lightLine)
+        
+        darkBrownLine.backgroundColor = UIColor.brown
+        darkBrownLine.alpha = 0.6
+        self.view.addSubview(darkBrownLine)
+        
         // Fill board
         for i in 1...8
         {

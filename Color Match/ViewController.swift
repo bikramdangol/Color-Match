@@ -77,6 +77,21 @@ class ViewController: UIViewController {
                 circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
                 tryRow.addSubview(circularButton)
             }
+            
+            // Hint board goes here
+            let hintRow = UIView(frame: CGRect(x: self.view.frame.width - 2 * circleDiameter, y: self.view.frame.height - CGFloat(i + 1) * circleDiameter, width: 2 * circleDiameter, height: circleDiameter))
+            self.view.addSubview(hintRow)
+            for j in 0..<4
+            {
+                let circularButton = CircularButton()
+                circularButton.borderColor = UIColor.white
+                circularButton.fillColor = UIColor.clear
+                circularButton.circularButtonType = .Hint
+                circularButton.frame = CGRect(x: tryRow.frame.width + CGFloat(j) * circleDiameter * 2.0 / 5.0, y: 0, width: circleDiameter, height: circleDiameter)
+                //circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
+                tryRow.addSubview(circularButton)
+            }
+
         }
         
     }
@@ -92,8 +107,10 @@ class ViewController: UIViewController {
     
     func dropColor(_ sender:CircularButton)
     {
-        sender.fillColor = selectedColor
-        sender.circularButtonType = .ColorPlaced
+        if selectedColor != UIColor.clear{            
+            sender.fillColor = selectedColor
+            sender.circularButtonType = .ColorPlaced
+        }
     }
 
     override func didReceiveMemoryWarning() {

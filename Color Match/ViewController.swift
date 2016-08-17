@@ -38,6 +38,7 @@ class ViewController: UIViewController {
             let circularButton = CircularButton()
             circularButton.borderColor = UIColor.white
             circularButton.fillColor = colors[i]
+            circularButton.circularButtonType = .ColorSelection
             circularButton.frame = CGRect(x: CGFloat(i) * circleDiameter, y: 0, width: circleDiameter, height: circleDiameter)
             circularButton.addTarget(self, action: #selector(ViewController.selectColor(_:)), for:.touchUpInside)
             self.colorCodeView.addSubview(circularButton)
@@ -92,6 +93,7 @@ class ViewController: UIViewController {
     func dropColor(_ sender:CircularButton)
     {
         sender.fillColor = selectedColor
+        sender.circularButtonType = .ColorPlaced
     }
 
     override func didReceiveMemoryWarning() {

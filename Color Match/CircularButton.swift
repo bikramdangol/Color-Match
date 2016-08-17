@@ -110,6 +110,20 @@ class CircularButton: UIButton {
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                             startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                             options: CGGradientDrawingOptions(rawValue: UInt32(0)))
+            } else if circularButtonType == .Hint {
+                // Normal circle
+                startPoint.x = centerX * 0.9
+                startPoint.y = centerY * 1.2
+                endPoint.x = centerX
+                endPoint.y = centerY
+                let startRadius: CGFloat = 0
+                let endRadius: CGFloat = maximumPossibleRadius * 0.3 //- borderWidth/2
+                locations = [0.0, 0.7, 1.0]
+                colors = [UIColor.lightGray.cgColor, UIColor.lightGray.cgColor, UIColor.brown.cgColor]
+                let gradient = CGGradient(colorsSpace: colorspace, colors: colors, locations: locations)
+                context.drawRadialGradient (gradient!, startCenter: startPoint,
+                                            startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
+                                            options: CGGradientDrawingOptions(rawValue: UInt32(0)))
             }
 
         } else {

@@ -8,6 +8,13 @@
 
 import UIKit
 
+public enum CircularButtonType {
+    case Hollow
+    case ColorSelection
+    case ColorPlaced
+    case Hint
+}
+
 class CircularButton: UIButton {
 
     @IBInspectable var fillColor: UIColor = UIColor.clear {
@@ -21,6 +28,14 @@ class CircularButton: UIButton {
     @IBInspectable var borderColor: UIColor = UIColor.white {
         didSet(oldColor) {
             if borderColor != oldColor {
+                self.setNeedsDisplay()
+            }
+        }
+    }
+    
+    @IBInspectable var circularButtonType: CircularButtonType = .Hollow {
+        didSet(oldType) {
+            if circularButtonType != oldType {
                 self.setNeedsDisplay()
             }
         }
@@ -54,7 +69,7 @@ class CircularButton: UIButton {
         let context = UIGraphicsGetCurrentContext()
         if let context = context{
             // Make small hole
-            if fillColor == UIColor.clear{
+            if circularButtonType == .Hollow{
                 startPoint.x = centerX * 0.9
                 startPoint.y = centerY * 1.3
                 endPoint.x = centerX
@@ -67,7 +82,7 @@ class CircularButton: UIButton {
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                              startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                              options: CGGradientDrawingOptions(rawValue: UInt32(0)))
-            }else {
+            } else if circularButtonType == .ColorSelection {
                 // Normal circle
                 startPoint.x = centerX/1.2
                 startPoint.y = centerY/1.2
@@ -81,7 +96,22 @@ class CircularButton: UIButton {
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                              startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                              options: CGGradientDrawingOptions(rawValue: UInt32(0)))
+            } else if circularButtonType == .ColorPlaced {
+                // Normal circle
+                startPoint.x = centerX/1.2
+                startPoint.y = centerY/1.2
+                endPoint.x = centerX
+                endPoint.y = centerY
+                let startRadius: CGFloat = 0
+                let endRadius: CGFloat = maximumPossibleRadius * 0.65 //- borderWidth/2
+                locations = [0.0, 1.0]
+                colors = [UIColor.white.cgColor, fillColor.cgColor]
+                let gradient = CGGradient(colorsSpace: colorspace, colors: colors, locations: locations)
+                context.drawRadialGradient (gradient!, startCenter: startPoint,
+                                            startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
+                                            options: CGGradientDrawingOptions(rawValue: UInt32(0)))
             }
+
         } else {
             print("No Context....")
         }

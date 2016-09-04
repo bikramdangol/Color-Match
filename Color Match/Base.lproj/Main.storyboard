@@ -72,7 +72,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wood_texture.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Gs8-7D-poF"/>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T6A-Dd-l7h">
-                                <color key="backgroundColor" red="1" green="0.58860194785727815" blue="0.31681431458984621" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="0.24313727020000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="TBb-OU-mNY"/>
                                     <constraint firstAttribute="height" constant="40" id="Weq-CS-Ahz"/>
@@ -92,7 +92,7 @@
                                     <constraint firstAttribute="height" constant="80" id="pbF-vd-Rk9"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>

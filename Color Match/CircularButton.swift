@@ -78,7 +78,7 @@ class CircularButton: UIButton {
                 let endRadius: CGFloat = maximumPossibleRadius/2
                 locations = [0.0, 0.7, 1.0]
                 colors = [UIColor.lightGray.cgColor, UIColor.lightGray.cgColor, UIColor.brown.cgColor]
-                let gradient = CGGradient(colorsSpace: colorspace, colors: colors, locations: locations)
+                let gradient = CGGradient(colorsSpace: colorspace, colors: colors as CFArray, locations: locations)
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                              startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                              options: CGGradientDrawingOptions(rawValue: UInt32(0)))
@@ -92,7 +92,7 @@ class CircularButton: UIButton {
                 let endRadius: CGFloat = maximumPossibleRadius * 0.75 //- borderWidth/2
                 locations = [0.0, 1.0]
                 colors = [UIColor.white.cgColor, fillColor.cgColor]
-                let gradient = CGGradient(colorsSpace: colorspace, colors: colors, locations: locations)
+                let gradient = CGGradient(colorsSpace: colorspace, colors: colors as CFArray, locations: locations)
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                              startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                              options: CGGradientDrawingOptions(rawValue: UInt32(0)))
@@ -106,7 +106,7 @@ class CircularButton: UIButton {
                 let endRadius: CGFloat = maximumPossibleRadius * 0.65 //- borderWidth/2
                 locations = [0.0, 1.0]
                 colors = [UIColor.white.cgColor, fillColor.cgColor]
-                let gradient = CGGradient(colorsSpace: colorspace, colors: colors, locations: locations)
+                let gradient = CGGradient(colorsSpace: colorspace, colors: colors as CFArray, locations: locations)
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                             startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                             options: CGGradientDrawingOptions(rawValue: UInt32(0)))
@@ -120,7 +120,7 @@ class CircularButton: UIButton {
                 let endRadius: CGFloat = maximumPossibleRadius * 0.3 //- borderWidth/2
                 locations = [0.0, 0.7, 1.0]
                 colors = [UIColor.lightGray.cgColor, UIColor.lightGray.cgColor, UIColor.brown.cgColor]
-                let gradient = CGGradient(colorsSpace: colorspace, colors: colors, locations: locations)
+                let gradient = CGGradient(colorsSpace: colorspace, colors: colors as CFArray, locations: locations)
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                             startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                             options: CGGradientDrawingOptions(rawValue: UInt32(0)))

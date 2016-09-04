@@ -98,7 +98,7 @@ class ViewController: UIViewController {
                 circularButton.fillColor = UIColor.clear
                 circularButton.tag = i * columnSize + j
                 circularButton.frame = CGRect(x: CGFloat(j) * circleDiameter, y: 0, width: circleDiameter, height: circleDiameter)
-                circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
+                //circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
                 tryRow.addSubview(circularButton)
                 //Hold color information
                 let center:CGPoint = CGPoint(x: CGFloat(i) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
             // Hint board goes here
             let hintRow = UIView(frame: CGRect(x: self.view.frame.width - 2 * circleDiameter, y: self.view.frame.height - CGFloat(i + 2) * circleDiameter, width: 2 * circleDiameter, height: circleDiameter))
             self.view.addSubview(hintRow)
-            for j in 0..<4
+            for j in 0..<columnSize
             {
                 let circularButton = CircularButton()
                 circularButton.borderColor = UIColor.white
@@ -122,6 +122,33 @@ class ViewController: UIViewController {
 
         }
         
+        activateTheFirstRow()
+        
+    }
+    
+    func activateTheFirstRow()
+    {
+        activateARow(whoseRowNumberIs: 0)
+    }
+    
+    func activateARow(whoseRowNumberIs row:Int)
+    {
+        var circularButton:CircularButton
+        for column in 0..<columnSize
+        {
+            circularButton = (colorDropArea[row][column] as ColorPieceInformation).colorButton
+            circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
+        }
+    }
+    
+    func deactivateARow(whoseRowNumberIs row:Int)
+    {
+        var circularButton:CircularButton
+        for column in 0..<columnSize
+        {
+            circularButton = (colorDropArea[row][column] as ColorPieceInformation).colorButton
+            circularButton.removeTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
+        }
     }
     
     func selectColor(_ sender:CircularButton)
@@ -140,6 +167,28 @@ class ViewController: UIViewController {
             sender.circularButtonType = .ColorPlaced
             saveColorInformationInBoard(sender)
         }
+        let currentRow = sender.tag / columnSize
+        if isAllColumnsFilled(inRow: currentRow)
+        {
+            deactivateARow(whoseRowNumberIs: currentRow)
+            if currentRow < columnSize - 1
+            {
+                activateARow(whoseRowNumberIs: currentRow + 1)
+            }
+        }
+    }
+    
+    func isAllColumnsFilled(inRow row:Int) -> Bool
+    {
+        var isAllColumnsFilled = true
+        for column in 0..<columnSize
+        {
+            if (colorDropArea[row][column] as ColorPieceInformation).colorButton.fillColor == UIColor.clear
+            {
+                isAllColumnsFilled = false
+            }
+        }
+        return isAllColumnsFilled
     }
     
     func saveColorInformationInBoard(_ sender:CircularButton)

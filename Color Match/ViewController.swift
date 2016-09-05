@@ -10,12 +10,15 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet var colorCodeView: UIView!
+    @IBOutlet var colorSelectionView: UIView!
     @IBOutlet var backgroundImage: UIImageView!
+    var colorCodeRowView:UIView!
     var selectedButton: CircularButton = CircularButton()
     let maxTry = 8
     let columnSize = 4
     let numberOfColors = 6
+    let colors:[UIColor] = [UIColor.red,UIColor.green,UIColor.yellow,UIColor.blue,UIColor.cyan,UIColor.magenta]
+    var circleDiameter: CGFloat = 0.0
     var selectedColor = UIColor.clear
     
     struct ColorPieceInformation {
@@ -27,6 +30,7 @@ class ViewController: UIViewController {
     var colorPickArea:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 6)
     
     var colorDropAreaRow:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 4)
+    var colorCodeRow:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 4)
     var hintAreaRow:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 4)
     var colorDropArea:Array = Array<Array<ColorPieceInformation>>()
     var hintArea:Array = Array<Array<ColorPieceInformation>>()
@@ -54,12 +58,12 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         let numberOfColors = 6
         let widthOfScreen = self.view.frame.width
-        let circleDiameter = widthOfScreen/CGFloat(numberOfColors)
+        circleDiameter = widthOfScreen/CGFloat(numberOfColors)
         print("Circle diameter is : \(circleDiameter)")
-        let colors:[UIColor] = [UIColor.red,UIColor.green,UIColor.yellow,UIColor.blue,UIColor.cyan,UIColor.magenta]
-        colorCodeView.frame = CGRect(x: 0, y: self.view.frame.height - circleDiameter, width: self.view.frame.width, height: circleDiameter)
         
-        print("Color view height is : \(colorCodeView.frame.height)")
+        colorSelectionView.frame = CGRect(x: 0, y: self.view.frame.height - circleDiameter, width: self.view.frame.width, height: circleDiameter)
+        
+        print("Color view height is : \(colorSelectionView.frame.height)")
         fillColorDropArea()
         fillHintArea()
         // Build color selection row
@@ -71,7 +75,7 @@ class ViewController: UIViewController {
             circularButton.circularButtonType = .ColorSelection
             circularButton.frame = CGRect(x: CGFloat(i) * circleDiameter, y: 0, width: circleDiameter, height: circleDiameter)
             circularButton.addTarget(self, action: #selector(ViewController.selectColor(_:)), for:.touchUpInside)
-            self.colorCodeView.addSubview(circularButton)
+            self.colorSelectionView.addSubview(circularButton)
             //Hold color information
             let center:CGPoint = CGPoint(x: CGFloat(i) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
             let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: colors[i], colorButton: circularButton)
@@ -96,7 +100,8 @@ class ViewController: UIViewController {
         darkBrownLine.backgroundColor = UIColor.brown
         darkBrownLine.alpha = 0.6
         self.view.addSubview(darkBrownLine)
-        
+        // Create color code
+        createColorCode()
         // Fill board
         for i in 0..<8
         {
@@ -112,7 +117,7 @@ class ViewController: UIViewController {
                 circularButton.frame = CGRect(x: CGFloat(j) * circleDiameter, y: 0, width: circleDiameter, height: circleDiameter)
                 //circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
                 tryRow.addSubview(circularButton)
-                //Hold color information
+                //Hold color information default values
                 let center:CGPoint = CGPoint(x: CGFloat(i) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
                 let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: UIColor.clear, colorButton: circularButton)
                 colorDropArea[i][j] = colorPieceInformation
@@ -130,7 +135,7 @@ class ViewController: UIViewController {
                 circularButton.frame = CGRect(x: tryRow.frame.width + CGFloat(j) * circleDiameter * 2.0 / 5.0, y: 0, width: circleDiameter, height: circleDiameter)
                 //circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
                 tryRow.addSubview(circularButton)
-                //Hold color information
+                //Hold hint information default values
                 let center:CGPoint = CGPoint(x: CGFloat(i) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
                 let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: UIColor.clear, colorButton: circularButton)
                 hintArea[i][j] = colorPieceInformation
@@ -141,6 +146,32 @@ class ViewController: UIViewController {
         
         activateTheFirstRow()
         
+    }
+    
+    func createColorCode()
+    {
+        colorCodeRowView = UIView(frame: CGRect(x: 0, y: self.view.frame.height - circleDiameter, width: self.view.frame.width - 2 * circleDiameter, height: circleDiameter))
+        self.view.addSubview(colorCodeRowView)
+        for column in 0..<columnSize
+        {
+            let randomColorCode = Int(arc4random_uniform(UInt32(numberOfColors)))
+            
+            let circularButton = CircularButton()
+            circularButton.borderColor = UIColor.white
+            circularButton.fillColor = colors[randomColorCode]
+            circularButton.circularButtonType = .ColorPlaced
+            circularButton.frame = CGRect(x: CGFloat(column) * circleDiameter, y: 0, width: circleDiameter, height: circleDiameter)
+            colorCodeRowView.addSubview(circularButton)
+            
+            //Hold color code information
+            let center:CGPoint = CGPoint(x: CGFloat(column) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
+            let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: colors[randomColorCode], colorButton: circularButton)
+            colorCodeRow[column] = colorPieceInformation
+            
+            colorCodeRowView.isHidden = true
+
+        }
+
     }
     
     func activateTheFirstRow()
@@ -188,26 +219,69 @@ class ViewController: UIViewController {
         if isAllColumnsFilled(inRow: currentRow)
         {
             deactivateARow(whoseRowNumberIs: currentRow)
-            if currentRow < maxTry - 1
-            {
-                activateARow(whoseRowNumberIs: currentRow + 1)
-            }
-            provideHint(forRow: currentRow)
+            
+            provideHint(forRow: currentRow, completion:{(showCode: Bool) -> Void in
+                if showCode == true
+                {
+                    colorCodeRowView.isHidden = false
+                    colorSelectionView.isHidden = true
+                }
+                else if currentRow < maxTry - 1
+                {
+                    activateARow(whoseRowNumberIs: currentRow + 1)
+                }
+            })
         }
     }
     
-    func provideHint(forRow currentRow:Int)
+    func provideHint(forRow currentRow:Int, completion: (_ showCode: Bool) -> Void)
     {
-        for column in 0..<columnSize
+        var exactPosition:Int = 0;
+        var colorMatch:Int = 0;
+        var exactPositionArray:Array = [false,false,false,false];
+        var colorMatchArray:Array = [false,false,false,false];
+        for i in 0..<4
         {
-            if(column%2 == 0)
+            if (colorCodeRow[i] as ColorPieceInformation).color == (colorDropArea[currentRow][i] as ColorPieceInformation).color
             {
-                (hintArea[currentRow][column] as ColorPieceInformation).colorButton.fillColor = UIColor.white
+                exactPosition += 1;
+                exactPositionArray[i] = true;
+                colorMatchArray[i] = true;
             }
-            else
+        }
+        
+        
+        for i in 0..<4
+        {
+            for j in 0..<4
             {
-                (hintArea[currentRow][column] as ColorPieceInformation).colorButton.fillColor = UIColor.black
+                if(!exactPositionArray[i] && !colorMatchArray[j] && (colorCodeRow[i] as ColorPieceInformation).color == (colorDropArea[currentRow][j] as ColorPieceInformation).color)
+                {
+                    colorMatch += 1;
+                    colorMatchArray[j] = true;
+                    break;
+                }
             }
+        }
+        
+        for i in 0..<exactPosition
+        {
+            (hintArea[currentRow][i] as ColorPieceInformation).colorButton.fillColor = UIColor.black
+        }
+        
+        for j in exactPosition..<colorMatch+exactPosition
+        {
+            (hintArea[currentRow][j] as ColorPieceInformation).colorButton.fillColor = UIColor.white
+
+        }
+        
+        if exactPosition == 4
+        {
+            completion(true)
+        }
+        else
+        {
+            completion(false)
         }
         
     }

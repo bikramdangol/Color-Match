@@ -27,7 +27,9 @@ class ViewController: UIViewController {
     var colorPickArea:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 6)
     
     var colorDropAreaRow:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 4)
+    var hintAreaRow:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 4)
     var colorDropArea:Array = Array<Array<ColorPieceInformation>>()
+    var hintArea:Array = Array<Array<ColorPieceInformation>>()
     @IBAction func backButtonPressed(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -36,6 +38,14 @@ class ViewController: UIViewController {
         for _ in 0..<maxTry
         {
             colorDropArea.append(colorDropAreaRow)
+        }
+    }
+    
+    func fillHintArea()
+    {
+        for _ in 0..<maxTry
+        {
+            hintArea.append(hintAreaRow)
         }
     }
     
@@ -51,6 +61,7 @@ class ViewController: UIViewController {
         
         print("Color view height is : \(colorCodeView.frame.height)")
         fillColorDropArea()
+        fillHintArea()
         // Build color selection row
         for i in 0..<6
         {
@@ -90,6 +101,7 @@ class ViewController: UIViewController {
         for i in 0..<8
         {
             let tryRow = UIView(frame: CGRect(x: 0, y: self.view.frame.height - CGFloat(i + 2) * circleDiameter, width: self.view.frame.width - 2 * circleDiameter, height: circleDiameter))
+            //tryRow.backgroundColor = UIColor.darkGray
             self.view.addSubview(tryRow)
             for j in 0..<columnSize
             {
@@ -107,8 +119,8 @@ class ViewController: UIViewController {
             }
             
             // Hint board goes here
-            let hintRow = UIView(frame: CGRect(x: self.view.frame.width - 2 * circleDiameter, y: self.view.frame.height - CGFloat(i + 2) * circleDiameter, width: 2 * circleDiameter, height: circleDiameter))
-            self.view.addSubview(hintRow)
+           // let hintRow = UIView(frame: CGRect(x: self.view.frame.width - 2 * circleDiameter, y: self.view.frame.height - CGFloat(i + 2) * circleDiameter, width: 2 * circleDiameter, height: circleDiameter))
+            //self.view.addSubview(hintRow)
             for j in 0..<columnSize
             {
                 let circularButton = CircularButton()
@@ -118,6 +130,11 @@ class ViewController: UIViewController {
                 circularButton.frame = CGRect(x: tryRow.frame.width + CGFloat(j) * circleDiameter * 2.0 / 5.0, y: 0, width: circleDiameter, height: circleDiameter)
                 //circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
                 tryRow.addSubview(circularButton)
+                //Hold color information
+                let center:CGPoint = CGPoint(x: CGFloat(i) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
+                let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: UIColor.clear, colorButton: circularButton)
+                hintArea[i][j] = colorPieceInformation
+
             }
 
         }
@@ -171,11 +188,28 @@ class ViewController: UIViewController {
         if isAllColumnsFilled(inRow: currentRow)
         {
             deactivateARow(whoseRowNumberIs: currentRow)
-            if currentRow < columnSize - 1
+            if currentRow < maxTry - 1
             {
                 activateARow(whoseRowNumberIs: currentRow + 1)
             }
+            provideHint(forRow: currentRow)
         }
+    }
+    
+    func provideHint(forRow currentRow:Int)
+    {
+        for column in 0..<columnSize
+        {
+            if(column%2 == 0)
+            {
+                (hintArea[currentRow][column] as ColorPieceInformation).colorButton.fillColor = UIColor.white
+            }
+            else
+            {
+                (hintArea[currentRow][column] as ColorPieceInformation).colorButton.fillColor = UIColor.black
+            }
+        }
+        
     }
     
     func isAllColumnsFilled(inRow row:Int) -> Bool

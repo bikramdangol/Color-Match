@@ -113,13 +113,31 @@ class CircularButton: UIButton {
             } else if circularButtonType == .Hint {
                 // Normal circle
                 startPoint.x = centerX * 0.9
-                startPoint.y = centerY * 1.2
                 endPoint.x = centerX
                 endPoint.y = centerY
                 let startRadius: CGFloat = 0
-                let endRadius: CGFloat = maximumPossibleRadius * 0.3 //- borderWidth/2
-                locations = [0.0, 0.7, 1.0]
-                colors = [UIColor.lightGray.cgColor, UIColor.lightGray.cgColor, UIColor.brown.cgColor]
+                var endRadius: CGFloat = 0
+                if fillColor == UIColor.clear//draw hole
+                {
+                    startPoint.y = centerY * 1.2
+                    endRadius = maximumPossibleRadius * 0.3 //- borderWidth/2
+                    locations = [0.0, 0.7, 1.0]
+                    colors = [UIColor.lightGray.cgColor, UIColor.lightGray.cgColor, UIColor.brown.cgColor]
+                }
+                else if fillColor == UIColor.white
+                {
+                    startPoint.y = centerY / 1.2
+                    endRadius = maximumPossibleRadius * 0.4 //- borderWidth/2
+                    locations = [0.0, 0.7, 1.0]
+                    colors = [UIColor.white.cgColor, UIColor.white.cgColor, UIColor.lightGray.cgColor]
+                }
+                else//black
+                {
+                    startPoint.y = centerY / 1.2
+                    endRadius = maximumPossibleRadius * 0.4 //- borderWidth/2
+                    locations = [0.0, 0.7, 1.0]
+                    colors = [UIColor.white.cgColor, UIColor.black.cgColor, UIColor.black.cgColor]
+                }
                 let gradient = CGGradient(colorsSpace: colorspace, colors: colors as CFArray, locations: locations)
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                             startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,

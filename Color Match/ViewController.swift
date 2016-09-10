@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class ViewController: UIViewController {
 
@@ -21,10 +22,19 @@ class ViewController: UIViewController {
     var circleDiameter: CGFloat = 0.0
     var selectedColor = UIColor.clear
     
+    var exactPosition:Int = 0;
+    
     struct ColorPieceInformation {
         var center: CGPoint
         var color: UIColor
         var colorButton: CircularButton
+    }
+    
+    enum GameStatus
+    {
+        case inProgress
+        case won
+        case lose
     }
     
     var colorPickArea:[ColorPieceInformation] = [ColorPieceInformation](repeating: ColorPieceInformation(center: CGPoint(x: 0.0, y: 0.0), color: UIColor.white, colorButton:CircularButton()), count: 6)
@@ -56,6 +66,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        initGame()
+    }
+    
+    func initGame()
+    {
         let numberOfColors = 6
         let widthOfScreen = self.view.frame.width
         circleDiameter = widthOfScreen/CGFloat(numberOfColors)
@@ -124,7 +139,7 @@ class ViewController: UIViewController {
             }
             
             // Hint board goes here
-           // let hintRow = UIView(frame: CGRect(x: self.view.frame.width - 2 * circleDiameter, y: self.view.frame.height - CGFloat(i + 2) * circleDiameter, width: 2 * circleDiameter, height: circleDiameter))
+            // let hintRow = UIView(frame: CGRect(x: self.view.frame.width - 2 * circleDiameter, y: self.view.frame.height - CGFloat(i + 2) * circleDiameter, width: 2 * circleDiameter, height: circleDiameter))
             //self.view.addSubview(hintRow)
             for j in 0..<columnSize
             {
@@ -139,13 +154,12 @@ class ViewController: UIViewController {
                 let center:CGPoint = CGPoint(x: CGFloat(i) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
                 let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: UIColor.clear, colorButton: circularButton)
                 hintArea[i][j] = colorPieceInformation
-
+                
             }
-
+            
         }
         
         activateTheFirstRow()
-        
     }
     
     func createColorCode()
@@ -201,6 +215,7 @@ class ViewController: UIViewController {
     
     func selectColor(_ sender:CircularButton)
     {
+        AudioServicesPlaySystemSound(1104);
         selectedButton.borderColor = UIColor.white
         sender.borderColor = UIColor.black
         selectedButton = sender
@@ -210,7 +225,16 @@ class ViewController: UIViewController {
     
     func dropColor(_ sender:CircularButton)
     {
-        if selectedColor != UIColor.clear{            
+        
+        if selectedColor != UIColor.clear{
+            if sender.fillColor == UIColor.clear
+            {
+                AudioServicesPlaySystemSound(1104);
+            }
+            else
+            {
+                AudioServicesPlaySystemSound(1055);
+            }
             sender.fillColor = selectedColor
             sender.circularButtonType = .ColorPlaced
             saveColorInformationInBoard(sender)
@@ -218,25 +242,102 @@ class ViewController: UIViewController {
         let currentRow = sender.tag / columnSize
         if isAllColumnsFilled(inRow: currentRow)
         {
+            AudioServicesPlaySystemSound(1054);
             deactivateARow(whoseRowNumberIs: currentRow)
             
-            provideHint(forRow: currentRow, completion:{(showCode: Bool) -> Void in
-                if showCode == true
-                {
-                    colorCodeRowView.isHidden = false
-                    colorSelectionView.isHidden = true
-                }
-                else if currentRow < maxTry - 1
-                {
+            provideHint(forRow: currentRow)
+            let gameStatus:GameStatus = getGameStatus(at: currentRow)
+            switch gameStatus
+            {
+                case .inProgress:
                     activateARow(whoseRowNumberIs: currentRow + 1)
-                }
-            })
+                case .won:
+                    showColorCode()
+                    showAlert(withTitle: "Congratulations", andWithMessage:"You won! Would you like to play again?")
+                case .lose:
+                    showColorCode()
+                    showAlert(withTitle: "Game Over", andWithMessage:"You lose! Would you like to play again?")
+            }
         }
     }
     
-    func provideHint(forRow currentRow:Int, completion: (_ showCode: Bool) -> Void)
+    func showAlert(withTitle title: String, andWithMessage message: String)
     {
-        var exactPosition:Int = 0;
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Play again", style: UIAlertActionStyle.default, handler: restartGame))
+        alert.addAction(UIAlertAction(title: "Exit", style: UIAlertActionStyle.destructive, handler: goBack))
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil))
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func restartGame(action:UIAlertAction)
+    {
+        resetGame()
+    }
+    
+    func resetGame()
+    {
+        //reset color drop area and hint area
+        for row in 0..<maxTry
+        {
+            for column in 0..<columnSize
+            {
+                (colorDropArea[row][column] as ColorPieceInformation).colorButton.fillColor = UIColor.clear
+                (colorDropArea[row][column] as ColorPieceInformation).colorButton.circularButtonType = .Hollow
+                
+                (hintArea[row][column] as ColorPieceInformation).colorButton.fillColor = UIColor.clear
+            }
+        }
+        
+        // hide and set color code
+        colorCodeRowView.isHidden = true
+        for column in 0..<columnSize
+        {
+            let randomColorCode = Int(arc4random_uniform(UInt32(numberOfColors)))
+            (colorCodeRow[column] as ColorPieceInformation).colorButton.fillColor = colors[randomColorCode]
+        }
+        // show color selection row
+        colorSelectionView.isHidden = false
+        
+        activateTheFirstRow()
+    }
+    
+    func goBack(action:UIAlertAction)
+    {
+        self.dismiss(animated: true) { }
+    }
+    
+    func showColorCode()
+    {
+        colorCodeRowView.isHidden = false
+        colorSelectionView.isHidden = true
+    }
+    
+    func getGameStatus(at currentRow:Int) -> GameStatus
+    {
+        let gameStatus:GameStatus
+        if exactPosition == columnSize
+        {
+            gameStatus = .won
+        }
+        else if currentRow == maxTry - 1
+        {
+            gameStatus = .lose
+        }
+        else
+        {
+            gameStatus = .inProgress
+        }
+        return gameStatus
+    }
+    
+    func provideHint(forRow currentRow:Int)
+    {
+        exactPosition = 0;
         var colorMatch:Int = 0;
         var exactPositionArray:Array = [false,false,false,false];
         var colorMatchArray:Array = [false,false,false,false];
@@ -249,7 +350,6 @@ class ViewController: UIViewController {
                 colorMatchArray[i] = true;
             }
         }
-        
         
         for i in 0..<4
         {
@@ -273,15 +373,6 @@ class ViewController: UIViewController {
         {
             (hintArea[currentRow][j] as ColorPieceInformation).colorButton.fillColor = UIColor.white
 
-        }
-        
-        if exactPosition == 4
-        {
-            completion(true)
-        }
-        else
-        {
-            completion(false)
         }
         
     }

@@ -8,12 +8,18 @@
 
 import UIKit
 
+var isSoundOn:Bool = true
+
 class HomeViewController: UIViewController {
 
     @IBOutlet var playButton: UIButton!
     @IBAction func playButtonPressed(_ sender: UIButton) {
         
     }
+    @IBOutlet var fourButton: UIButton!
+    @IBOutlet var fiveButton: UIButton!
+    @IBOutlet var eightTriesButton: UIButton!
+    @IBOutlet var tenTriesButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,7 +31,40 @@ class HomeViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func soundSwitchChanged(_ sender: UISwitch) {
+        isSoundOn = sender.isOn
+    }
 
+    @IBAction func sizeSelected(_ sender: UIButton) {
+        switch sender.tag
+        {
+            case 4:
+                fourButton.backgroundColor = UIColor.darkGray
+                fiveButton.backgroundColor = UIColor.lightGray
+                columnSize = 4
+            case 5:
+                fourButton.backgroundColor = UIColor.lightGray
+                fiveButton.backgroundColor = UIColor.darkGray
+                columnSize = 5
+            default:
+                columnSize = 4
+        }
+    }
+    @IBAction func triesSelected(_ sender: UIButton) {
+        switch sender.tag
+        {
+        case 8:
+            eightTriesButton.backgroundColor = UIColor.darkGray
+            tenTriesButton.backgroundColor = UIColor.lightGray
+            maxTries = 8
+        case 10:
+            eightTriesButton.backgroundColor = UIColor.lightGray
+            tenTriesButton.backgroundColor = UIColor.darkGray
+            maxTries = 10
+        default:
+            maxTries = 8
+        }
+    }
     /*
     // MARK: - Navigation
 

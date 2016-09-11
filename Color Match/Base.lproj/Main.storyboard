@@ -95,10 +95,97 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XLs-Zd-R6p">
+                                <subviews>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IJ0-MH-vZs">
+                                        <frame key="frameInset" minX="183" minY="8" width="51" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <action selector="soundSwitchChanged:" destination="Di8-wc-VDQ" eventType="valueChanged" id="3yG-tx-Od9"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sound:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbZ-ww-GcM">
+                                        <frame key="frameInset" minX="8" minY="13" width="58" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Code Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wY1-Va-daw">
+                                        <frame key="frameInset" minX="8" minY="55" width="85" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r7i-41-TGs">
+                                        <frame key="frameInset" minX="140" minY="55" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="4">
+                                            <color key="titleShadowColor" red="0.54024991119999999" green="0.12944529099999999" blue="0.12143482630000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleShadowColor" red="0.54024991119999999" green="0.12944529099999999" blue="0.12143482630000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="highlighted" title="4"/>
+                                        <connections>
+                                            <action selector="sizeSelected:" destination="Di8-wc-VDQ" eventType="touchUpInside" id="3d7-zA-7XG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Di9-ub-XQv">
+                                        <frame key="frameInset" minX="186" minY="54" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="5">
+                                            <color key="titleShadowColor" red="0.54024991119999999" green="0.12944529099999999" blue="0.12143482630000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="highlighted" title="4"/>
+                                        <connections>
+                                            <action selector="sizeSelected:" destination="Di8-wc-VDQ" eventType="touchUpInside" id="6DM-zp-y27"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tries:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Shf-2A-adU">
+                                        <frame key="frameInset" minX="8" minY="99" width="49" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TXZ-QZ-zQZ">
+                                        <frame key="frameInset" minX="186" minY="94" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="10">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="triesSelected:" destination="Di8-wc-VDQ" eventType="touchUpInside" id="8z7-sj-JKD"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HGc-Xr-dLA">
+                                        <frame key="frameInset" minX="140" minY="94" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="8">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="triesSelected:" destination="Di8-wc-VDQ" eventType="touchUpInside" id="IkE-TD-Qyp"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="DHi-fu-Xfp"/>
+                                    <constraint firstAttribute="height" constant="120" id="xvS-Le-ars"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Gs8-7D-poF" firstAttribute="top" secondItem="rKo-lk-eil" secondAttribute="top" id="7nu-h3-STh"/>
+                            <constraint firstItem="XLs-Zd-R6p" firstAttribute="top" secondItem="T6A-Dd-l7h" secondAttribute="bottom" constant="8" id="7ro-1f-01U"/>
+                            <constraint firstItem="XLs-Zd-R6p" firstAttribute="centerX" secondItem="rKo-lk-eil" secondAttribute="centerX" id="Exd-75-fq7"/>
                             <constraint firstItem="fQ7-cp-wjI" firstAttribute="trailing" secondItem="rKo-lk-eil" secondAttribute="trailingMargin" id="GpE-a6-YOn"/>
                             <constraint firstItem="Gs8-7D-poF" firstAttribute="leading" secondItem="rKo-lk-eil" secondAttribute="leading" id="R2r-1J-C7K"/>
                             <constraint firstItem="T6A-Dd-l7h" firstAttribute="centerX" secondItem="rKo-lk-eil" secondAttribute="centerX" id="ScV-2h-Sxh"/>
@@ -110,7 +197,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="eightTriesButton" destination="HGc-Xr-dLA" id="AsO-B2-cfC"/>
+                        <outlet property="fiveButton" destination="Di9-ub-XQv" id="Ci7-I0-xMR"/>
+                        <outlet property="fourButton" destination="r7i-41-TGs" id="MWx-kb-dql"/>
                         <outlet property="playButton" destination="T6A-Dd-l7h" id="vOD-uS-36e"/>
+                        <outlet property="tenTriesButton" destination="TXZ-QZ-zQZ" id="pnz-yv-2eZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O8j-2S-nPe" userLabel="First Responder" sceneMemberID="firstResponder"/>

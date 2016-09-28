@@ -487,6 +487,8 @@ class ViewController: UIViewController {
         }
         // show color selection row
         colorSelectionView.isHidden = false
+        previousSelectedButton.circularButtonType = .ColorSelection
+        selectedColor = UIColor.clear //No color selected.
         
         activateTheFirstRow()
     }

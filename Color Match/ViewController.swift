@@ -313,10 +313,7 @@ class ViewController: UIViewController {
         }
         else if indexOfCurrentTargetButton >= 0
         {
-            (colorDropArea[currentRow][indexOfCurrentTargetButton] as ColorPieceInformation).colorButton.isTarget = false
-            indexOfNearestTargetButton = -1
-            indexOfCurrentTargetButton = -1
-            indexOfPreviousTargetButton = -1
+            resetTargetInformation()
             previousDragPositionX = 0.0
         }
         if pan.state == .began {
@@ -328,6 +325,18 @@ class ViewController: UIViewController {
          let location = pan.locationInView(view) // get pan location
          button.center = location // set button to where finger is
          }*/
+        if pan.state == .cancelled
+        {
+            // While dragging, if home button is pressed the pan state will be cancelled.
+            resetTargetInformation()
+            previousDragPositionX = 0.0
+
+            button.center.x = originalX
+            button.center.y = originalY
+            originalX = 0.0
+            originalY = 0.0
+            selectColor(button)
+        }
         if pan.state == UIGestureRecognizerState.ended {
             button.center.x = originalX
             button.center.y = originalY
@@ -347,6 +356,14 @@ class ViewController: UIViewController {
                 dropColor(targetButton)
             }
         }
+    }
+    
+    func resetTargetInformation()
+    {
+        (colorDropArea[currentRow][indexOfCurrentTargetButton] as ColorPieceInformation).colorButton.isTarget = false
+        indexOfNearestTargetButton = -1
+        indexOfCurrentTargetButton = -1
+        indexOfPreviousTargetButton = -1
     }
     
     func getTargetRowY() -> CGFloat

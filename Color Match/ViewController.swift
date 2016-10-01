@@ -27,6 +27,15 @@ class ViewController: UIViewController {
     
     var exactPosition:Int = 0;
     
+    var originalX: CGFloat = 0.0
+    var originalY: CGFloat = 0.0
+    var indexOfNearestTargetButton: Int = -1
+    var indexOfCurrentTargetButton: Int = -1
+    var indexOfPreviousTargetButton: Int = -1
+    var previousDragPositionX: CGFloat = 0.0
+    var currentRow:Int = 0
+    var previousSelectedButton:CircularButton = CircularButton()
+    
     struct ColorPieceInformation {
         var center: CGPoint
         var color: UIColor
@@ -93,8 +102,16 @@ class ViewController: UIViewController {
             circularButton.fillColor = colors[i]
             circularButton.circularButtonType = .ColorSelection
             circularButton.frame = CGRect(x: CGFloat(i) * circleDiameter, y: 0, width: circleDiameter, height: circleDiameter)
-            circularButton.addTarget(self, action: #selector(ViewController.selectColor(_:)), for:.touchUpInside)
+            //circularButton.addTarget(self, action: #selector(ViewController.selectColor(_:)), for:.touchUpInside)
+            circularButton.addTarget(self, action: #selector(ViewController.selectColor(_:)), for:.touchDown)
+            
+            //Pan
+            let pan = UIPanGestureRecognizer(target: self, action: #selector(ViewController.panButton(pan:)))
+            circularButton.addGestureRecognizer(pan)
+            circularButton.isUserInteractionEnabled = true
+            
             self.colorSelectionView.addSubview(circularButton)
+            self.colorSelectionView.layer.zPosition = 1
             //Hold color information
             let center:CGPoint = CGPoint(x: CGFloat(i) * circleDiameter + circleDiameter/2, y: circleDiameter/2)
             let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: colors[i], colorButton: circularButton)
@@ -150,7 +167,7 @@ class ViewController: UIViewController {
                 //circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
                 tryRow.addSubview(circularButton)
                 //Hold color information default values
-                let center:CGPoint = CGPoint(x: CGFloat(i) * dropCircleDiameter + dropCircleDiameter/2, y: dropCircleDiameter/2)
+                let center:CGPoint = CGPoint(x: CGFloat(j) * dropCircleDiameter + dropCircleDiameter/2, y: dropCircleDiameter/2)
                 let colorPieceInformation:ColorPieceInformation = ColorPieceInformation(center: center, color: UIColor.clear, colorButton: circularButton)
                 colorDropArea[i][j] = colorPieceInformation
             }
@@ -219,6 +236,7 @@ class ViewController: UIViewController {
             circularButton = (colorDropArea[row][column] as ColorPieceInformation).colorButton
             circularButton.addTarget(self, action: #selector(ViewController.dropColor(_:)), for:.touchUpInside)
         }
+        currentRow = row
     }
     
     func deactivateARow(whoseRowNumberIs row:Int)
@@ -231,17 +249,157 @@ class ViewController: UIViewController {
         }
     }
     
+    //Pan
+    
+    func panButton(pan: UIPanGestureRecognizer) {
+        let translation = pan.translation(in: view)
+        let button = pan.view! as! CircularButton
+        print(button.center.x)
+        print("Button Y: \(button.center.y)")
+        if originalX == 0.0 {
+            originalX = button.center.x
+            originalY = button.center.y
+        }
+        button.center = CGPoint(x: originalX + translation.x, y: originalY + translation.y - button.bounds.width/2)
+        print("pan begin. translation (x, y) is (\(translation.x), \(translation.y)")
+        if -translation.y > button.bounds.width/4
+        {
+            if indexOfNearestTargetButton == -1
+            {
+                indexOfNearestTargetButton = getNearestTargetButtonIndex(from : button)
+                indexOfCurrentTargetButton = indexOfNearestTargetButton
+                indexOfPreviousTargetButton = indexOfCurrentTargetButton
+                (colorDropArea[currentRow][indexOfCurrentTargetButton] as ColorPieceInformation).colorButton.isTarget = true
+                previousDragPositionX = button.center.x
+                
+            }
+            let targetRowY = getTargetRowY()
+            let deltaY = abs(targetRowY) - abs(button.center.y + (button.superview?.frame.origin.y)!)
+            print("deltaY = \(deltaY) and circleDiameter is: \(circleDiameter)")
+            if abs(deltaY) < circleDiameter
+            {// When panned color is close to the target, get target index of the nearest one.
+                // Need to fix this.
+                indexOfCurrentTargetButton = getNearestTargetButtonIndex(from: button)
+                (colorDropArea[currentRow][indexOfPreviousTargetButton] as ColorPieceInformation).colorButton.isTarget = false
+                (colorDropArea[currentRow][indexOfCurrentTargetButton] as ColorPieceInformation).colorButton.isTarget = true
+                previousDragPositionX = button.center.x
+                indexOfPreviousTargetButton = indexOfCurrentTargetButton
+            }
+            else
+            {// When panned color is not close to the target, select target index with slight movement.
+                let deltaX = button.center.x - previousDragPositionX
+                print("DeltaX is : \(deltaX)")
+                let requiredMoveSteps = Int(deltaX/(circleDiameter/3.0))
+                if abs(requiredMoveSteps) > 0
+                {
+                    indexOfCurrentTargetButton += requiredMoveSteps
+                    if indexOfCurrentTargetButton >= columnSize
+                    {
+                        indexOfCurrentTargetButton = columnSize - 1
+                    }
+                    else if indexOfCurrentTargetButton < 0
+                    {
+                        indexOfCurrentTargetButton = 0
+                    }
+                    (colorDropArea[currentRow][indexOfPreviousTargetButton] as ColorPieceInformation).colorButton.isTarget = false
+                    (colorDropArea[currentRow][indexOfCurrentTargetButton] as ColorPieceInformation).colorButton.isTarget = true
+                    previousDragPositionX = button.center.x
+                    indexOfPreviousTargetButton = indexOfCurrentTargetButton
+                    
+                }
+            }
+            
+            
+        }
+        else if indexOfCurrentTargetButton >= 0
+        {
+            resetTargetInformation()
+            previousDragPositionX = 0.0
+        }
+        if pan.state == .began {
+            
+            //buttonCenter = pan.center // store old button center
+        } /*else if pan.state == .Ended || pan.state == .Failed || pan.state == .Cancelled {
+         button.center = buttonCenter // restore button center
+         } else {
+         let location = pan.locationInView(view) // get pan location
+         button.center = location // set button to where finger is
+         }*/
+        if pan.state == .cancelled
+        {
+            // While dragging, if home button is pressed the pan state will be cancelled.
+            resetTargetInformation()
+            previousDragPositionX = 0.0
+
+            button.center.x = originalX
+            button.center.y = originalY
+            originalX = 0.0
+            originalY = 0.0
+            selectColor(button)
+        }
+        if pan.state == UIGestureRecognizerState.ended {
+            button.center.x = originalX
+            button.center.y = originalY
+            originalX = 0.0
+            originalY = 0.0
+            selectColor(button)
+            if indexOfCurrentTargetButton >= 0
+            {
+                let targetButton:CircularButton = (colorDropArea[currentRow][indexOfCurrentTargetButton] as ColorPieceInformation).colorButton
+                
+                targetButton.isTarget = false
+                indexOfNearestTargetButton = -1
+                indexOfCurrentTargetButton = -1
+                indexOfPreviousTargetButton = -1
+                previousDragPositionX = 0.0
+                
+                dropColor(targetButton)
+            }
+        }
+    }
+    
+    func resetTargetInformation()
+    {
+        (colorDropArea[currentRow][indexOfCurrentTargetButton] as ColorPieceInformation).colorButton.isTarget = false
+        indexOfNearestTargetButton = -1
+        indexOfCurrentTargetButton = -1
+        indexOfPreviousTargetButton = -1
+    }
+    
+    func getTargetRowY() -> CGFloat
+    {
+        return (colorDropArea[currentRow][0] as ColorPieceInformation).center.y
+    }
+    
+    func getNearestTargetButtonIndex(from selectedButton:CircularButton) -> Int
+    {
+        var shortestDistance = self.view.bounds.width
+        var indexOfNearestTargetButton = 0
+        for (index, colorPieceInformation) in colorDropArea[currentRow].enumerated()
+        {
+            if abs((colorPieceInformation.center.x) - selectedButton.center.x) < shortestDistance
+            {
+                shortestDistance = abs((colorPieceInformation.center.x) - selectedButton.center.x)
+                indexOfNearestTargetButton = index
+            }
+        }
+        return indexOfNearestTargetButton
+    }
+    
     func selectColor(_ sender:CircularButton)
     {
+        previousSelectedButton.circularButtonType = .ColorSelection
         if isSoundOn
         {
             AudioServicesPlaySystemSound(1104);
         }
-        selectedButton.borderColor = UIColor.white
-        sender.borderColor = UIColor.black
+        //selectedButton.borderColor = UIColor.white
+        sender.circularButtonType = .ColorSelectionPressed
+        //sender.borderColor = UIColor.black
         selectedButton = sender
         selectedColor = sender.fillColor
         print(sender.fillColor)
+        previousSelectedButton = sender
     }
     
     func dropColor(_ sender:CircularButton)
@@ -329,6 +487,8 @@ class ViewController: UIViewController {
         }
         // show color selection row
         colorSelectionView.isHidden = false
+        previousSelectedButton.circularButtonType = .ColorSelection
+        selectedColor = UIColor.clear //No color selected.
         
         activateTheFirstRow()
     }

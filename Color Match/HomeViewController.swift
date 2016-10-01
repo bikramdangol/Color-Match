@@ -22,6 +22,7 @@ class HomeViewController: UIViewController {
     @IBOutlet var tenTriesButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        sizeSelected(fourButton)
 
         // Do any additional setup after loading the view.
     }
@@ -42,10 +43,14 @@ class HomeViewController: UIViewController {
                 fourButton.backgroundColor = UIColor.darkGray
                 fiveButton.backgroundColor = UIColor.lightGray
                 columnSize = 4
+                triesSelected(eightTriesButton)
+                tenTriesButton.isHidden = true
             case 5:
                 fourButton.backgroundColor = UIColor.lightGray
                 fiveButton.backgroundColor = UIColor.darkGray
                 columnSize = 5
+                triesSelected(tenTriesButton)
+                tenTriesButton.isHidden = false
             default:
                 columnSize = 4
         }

@@ -13,6 +13,8 @@ public enum CircularButtonType {
     case ColorSelection
     case ColorPlaced
     case Hint
+    case ColorSelectionPressed
+    case TargetButton
 }
 
 class CircularButton: UIButton {
@@ -36,6 +38,14 @@ class CircularButton: UIButton {
     @IBInspectable var circularButtonType: CircularButtonType = .Hollow {
         didSet(oldType) {
             if circularButtonType != oldType {
+                self.setNeedsDisplay()
+            }
+        }
+    }
+    
+    @IBInspectable var isTarget: Bool = false {
+        didSet(oldType) {
+            if isTarget != oldType {
                 self.setNeedsDisplay()
             }
         }
@@ -82,6 +92,20 @@ class CircularButton: UIButton {
                 context.drawRadialGradient (gradient!, startCenter: startPoint,
                                              startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                              options: CGGradientDrawingOptions(rawValue: UInt32(0)))
+            } else if circularButtonType == .ColorSelectionPressed {
+                // Normal circle
+                startPoint.x = centerX/1.2
+                startPoint.y = centerY/1.2
+                endPoint.x = centerX
+                endPoint.y = centerY
+                let startRadius: CGFloat = 0
+                let endRadius: CGFloat = maximumPossibleRadius * 0.9 //- borderWidth/2
+                locations = [0.0, 1.0]
+                colors = [UIColor.white.cgColor, fillColor.cgColor]
+                let gradient = CGGradient(colorsSpace: colorspace, colors: colors as CFArray, locations: locations)
+                context.drawRadialGradient (gradient!, startCenter: startPoint,
+                                            startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
+                                            options: CGGradientDrawingOptions(rawValue: UInt32(0)))
             } else if circularButtonType == .ColorSelection {
                 // Normal circle
                 startPoint.x = centerX/1.2
@@ -143,6 +167,14 @@ class CircularButton: UIButton {
                                             startRadius: startRadius, endCenter: endPoint, endRadius: endRadius,
                                             options: CGGradientDrawingOptions(rawValue: UInt32(0)))
             }
+            if isTarget == true
+            {
+                let path = UIBezierPath(arcCenter: CGPoint(x:bounds.width/2, y:bounds.height/2), radius: maximumPossibleRadius, startAngle: 0, endAngle: 360, clockwise: true)
+                path.lineWidth = borderWidth
+                UIColor.white.setStroke()
+                path.stroke()
+            }
+
 
         } else {
             print("No Context....")
